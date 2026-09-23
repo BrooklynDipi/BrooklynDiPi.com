@@ -1,111 +1,259 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --bg: #fbfaf7;
+  --fg: #141414;
+  --muted: #6b6b6b;
+  --hover-bg: rgba(0, 0, 0, 0.06);
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Athelas ships with macOS; other visitors get the fallbacks until a web
+     font version is loaded (e.g. via Adobe Fonts). */
+  --serif: 'Athelas', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
+  /* Menu sizing */
+  --logo-size: clamp(168px, 36vmin, 312px);
+  --gap: clamp(32px, 5vw, 72px); /* space between logo and menu */
+  --curve: clamp(24px, 4vw, 56px); /* how far the middle items bulge out */
+
+  color-scheme: light;
+  font: 18px/1.5 var(--serif);
+  color: var(--fg);
   background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+:root[data-theme='dark'] {
+  --bg: #111111;
+  --fg: #f2f0eb;
+  --muted: #9a9a9a;
+  --hover-bg: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  background: var(--bg);
+  transition: background-color 0.3s, color 0.3s;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+/* Toolbar */
+
+.toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 16px 16px 24px;
+  background: var(--bg);
+  z-index: 10;
+  transition: background-color 0.3s;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
+.toolbar__title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 0.5em;
   margin: 0;
+  font-size: 1.1rem;
+  font-weight: normal;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+.toolbar__dot {
+  color: var(--muted);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* Rolling titles: each new word slides up into a clipped window */
+
+.rolling {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  color: var(--muted);
+}
+
+.rolling__word {
+  display: inline-block;
+  animation: roll-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes roll-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+
+  .toolbar__dot {
+    margin-inline: 4px;
+  }
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: var(--hover-bg);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: 2px;
+  }
+}
+
+/* Icons: the SVG file in public/icons/ is used as a mask and filled with
+   the text color, so every icon follows the theme */
+.icon-button .glyph {
+  width: 18px;
+  height: 18px;
+  background-color: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+/* Line icons look lighter than the solid brand glyphs, so size them up */
+.theme-toggle .glyph {
+  width: 20px;
+  height: 20px;
+}
+
+/* Home */
+
+.home {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* Menu: logo on the left (the dot), categories stacked to its right
+   (the bar), bowed outward along an arc around the logo */
+
+.radial {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: 32px 16px;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  li {
+    /* --indent is 0 at the ends and 1 in the middle (set in RadialMenu.tsx) */
+    margin-left: calc(var(--indent) * var(--curve));
+    /* Tilt each label along its spoke from the logo (--angle from RadialMenu.tsx) */
+    transform: rotate(var(--angle));
+    transform-origin: left center;
+    font-size: 1.5rem;
+    white-space: nowrap;
+  }
+
+  a {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    color: var(--fg);
+    text-decoration: none;
+    transform-origin: left center;
+    transition: background-color 0.2s, transform 0.2s;
+
+    &:hover,
+    &:focus-visible {
+      background: var(--hover-bg);
+      transform: scale(1.08);
+      outline: none;
+    }
+  }
+}
+
+.logo {
+  flex-shrink: 0;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  object-fit: contain;
+  transition: filter 0.3s;
+}
+
+/* Logo is drawn in black; flip it to white in dark mode */
+:root[data-theme='dark'] .logo {
+  filter: invert(1);
+}
+
+/* Mobile: categories listed below the logo */
+@media (max-width: 600px) {
+  :root {
+    --logo-size: clamp(132px, 48vw, 192px);
+  }
+  /* Stack the title under the name so it fits beside the toggle */
+  .toolbar {
+    padding-left: 16px;
+  }
+  .toolbar__title {
+    flex-direction: column;
+    font-size: 1rem;
+  }
+  .toolbar__title .toolbar__dot {
+    display: none;
+  }
+  .radial {
+    flex-direction: column;
+    gap: 32px;
+
+    ul {
+      align-items: center;
+    }
+    li {
+      margin-left: 0;
+      transform: none;
+      font-size: 1.25rem;
+    }
+    a {
+      transform-origin: center;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
 }

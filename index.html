@@ -2,9 +2,35 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>brooklyndipi.com</title>
+    <title>BrooklynDiPi.com</title>
+
+    <!-- Load both theme icons up front so the toggle never shows a blank.
+         crossorigin matches how CSS fetches mask images, so the preload is reused. -->
+    <link rel="preload" href="/icons/sun.svg" as="image" type="image/svg+xml" crossorigin />
+    <link rel="preload" href="/icons/moon.svg" as="image" type="image/svg+xml" crossorigin />
+
+    <!-- Fonts for the radial menu categories (see src/categories.ts) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500&family=DM+Mono&family=Playfair+Display:ital@1&family=Special+Elite&family=Syne:wght@700&display=swap"
+    />
+
+    <!-- Apply the saved theme before first paint to avoid a flash -->
+    <script>
+      try {
+        const saved = localStorage.getItem('theme')
+        const theme =
+          saved ??
+          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        document.documentElement.dataset.theme = theme
+      } catch {
+        document.documentElement.dataset.theme = 'light'
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
