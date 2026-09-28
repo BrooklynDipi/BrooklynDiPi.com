@@ -1,8 +1,10 @@
 import type { CSSProperties } from 'react'
+import githubIcon from './icons/github.svg'
+import linkedinIcon from './icons/linkedin.svg'
 
 const links = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/your-profile', icon: `${import.meta.env.BASE_URL}icons/linkedin.svg` },
-  { label: 'GitHub', href: 'https://github.com/BrooklynDipi', icon: `${import.meta.env.BASE_URL}icons/github.svg` },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/your-profile', icon: linkedinIcon },
+  { label: 'GitHub', href: 'https://github.com/BrooklynDipi', icon: githubIcon },
 ]
 
 export default function SocialLinks() {

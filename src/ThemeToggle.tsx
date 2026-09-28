@@ -1,4 +1,6 @@
 import { useEffect, useState, type CSSProperties } from 'react'
+import moonIcon from './icons/moon.svg'
+import sunIcon from './icons/sun.svg'
 
 type Theme = 'light' | 'dark'
 
@@ -29,7 +31,7 @@ export default function ThemeToggle() {
     >
       <span
         className="glyph"
-        style={{ '--icon': `url(${import.meta.env.BASE_URL}icons/${theme === 'dark' ? 'sun' : 'moon'}.svg)` } as CSSProperties}
+        style={{ '--icon': `url(${theme === 'dark' ? sunIcon : moonIcon})` } as CSSProperties}
       />
     </button>
   )

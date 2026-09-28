@@ -144,7 +144,7 @@ body {
   }
 }
 
-/* Icons: the SVG file in public/icons/ is used as a mask and filled with
+/* Icons: the SVG file in src/icons/ is used as a mask and filled with
    the text color, so every icon follows the theme */
 .icon-button .glyph {
   width: 18px;
