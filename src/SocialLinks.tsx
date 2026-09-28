@@ -3,7 +3,7 @@ import githubIcon from './icons/github.svg'
 import linkedinIcon from './icons/linkedin.svg'
 
 const links = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/your-profile', icon: linkedinIcon },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/brooklyn-dipietrantonio-0a02501a4/', icon: linkedinIcon },
   { label: 'GitHub', href: 'https://github.com/BrooklynDipi', icon: githubIcon },
 ]
 
