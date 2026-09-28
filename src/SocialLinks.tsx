@@ -20,7 +20,7 @@ export default function SocialLinks() {
           aria-label={link.label}
           title={link.label}
         >
-          <span className="glyph" style={{ '--icon': `url(${link.icon})` } as CSSProperties} />
+          <span className="glyph" style={{ '--icon': `url("${link.icon}")` } as CSSProperties} />
         </a>
       ))}
     </>

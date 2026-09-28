@@ -31,7 +31,7 @@ export default function ThemeToggle() {
     >
       <span
         className="glyph"
-        style={{ '--icon': `url(${theme === 'dark' ? sunIcon : moonIcon})` } as CSSProperties}
+        style={{ '--icon': `url("${theme === 'dark' ? sunIcon : moonIcon}")` } as CSSProperties}
       />
     </button>
   )
